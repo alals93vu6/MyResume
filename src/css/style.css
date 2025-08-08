@@ -462,3 +462,32 @@ body {
         flex: 1;
     }
 }
+
+/* 先把 card 的固定高度拿掉（全域） */
+.section-card { height: auto; }
+
+/* 手機～平板保證不撐高 */
+@media (max-width: 991.98px) {
+  .left-column, .right-column {
+    display: block !important;   /* 關掉等高 flex */
+  }
+  .section-card {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+}
+
+/* 只有桌機需要等高時再開 */
+@media (min-width: 992px) {
+  .left-column, .right-column {
+    display: flex;
+    flex-direction: column;
+  }
+  /* 如果只想讓左欄最後一個填滿，保留它；否則也可以拿掉 */
+  .left-column .section-card:last-child { flex: 1 1 auto; }
+
+  /* 不要把右欄每張卡都強制撐高（容易造成怪高） */
+  .right-column .section-card { flex: initial; }
+}
+
+
