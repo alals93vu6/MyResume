@@ -177,80 +177,103 @@ document.addEventListener('DOMContentLoaded', handleResponsiveImages);
 
 // PDF內容重組函數
 function reorganizeContentForPDF(clonedContent) {
-    const mainRow = clonedContent.querySelector('.row');
-    const leftColumn = mainRow.querySelector('.left-column');
-    const rightColumn = mainRow.querySelector('.right-column');
-    
-    // 獲取各個區塊
-    const personalInfo = leftColumn.querySelector('.section-card:nth-child(1)'); // 個人資料
-    const skills = leftColumn.querySelector('.section-card:nth-child(2)'); // 技術專長
-    const certificates = leftColumn.querySelector('.section-card:nth-child(3)'); // 證照
-    const experiences = rightColumn.querySelector('.section-card');
-    
-    // 獲取所有經驗項目
-    const allExperiences = experiences.querySelectorAll('.experience-item');
-    const page1Experiences = Array.from(allExperiences).filter(exp => 
-        exp.getAttribute('data-pdf-page') === '1'
-    );
-    const page2Experiences = Array.from(allExperiences).filter(exp => 
-        exp.getAttribute('data-pdf-page') === '2'
-    );
-    
-    // 清空原始結構
-    mainRow.innerHTML = '';
-    
-    // 創建第一頁內容
-    const page1 = document.createElement('div');
-    page1.className = 'row page-one';
-    page1.innerHTML = `
-        <div class="col-lg-5 col-md-12 left-column">
-        </div>
-        <div class="col-lg-7 col-md-12 right-column">
-            <section class="section-card">
-                <h2 class="section-title">開發經驗</h2>
-            </section>
-        </div>
-    `;
-    
-    // 添加左欄內容到第一頁
-    page1.querySelector('.left-column').appendChild(personalInfo.cloneNode(true));
-    page1.querySelector('.left-column').appendChild(certificates.cloneNode(true));
-    
-    // 添加第一頁經驗
-    const page1ExperienceSection = page1.querySelector('.section-card');
-    page1Experiences.forEach(exp => {
-        page1ExperienceSection.appendChild(exp.cloneNode(true));
-    });
-    
-    // 為第一頁最後一個經驗添加分頁標記
-    const lastPage1Exp = page1ExperienceSection.lastElementChild;
-    if (lastPage1Exp) {
-        lastPage1Exp.classList.add('page-break-after');
+    try {
+        const mainRow = clonedContent.querySelector('.row');
+        if (!mainRow) {
+            console.error('找不到 .row 元素');
+            return;
+        }
+        
+        const leftColumn = mainRow.querySelector('.left-column');
+        const rightColumn = mainRow.querySelector('.right-column');
+        
+        if (!leftColumn || !rightColumn) {
+            console.error('找不到左欄或右欄元素');
+            return;
+        }
+        
+        // 獲取各個區塊
+        const personalInfo = leftColumn.querySelector('.section-card:nth-child(1)'); // 個人資料
+        const skills = leftColumn.querySelector('.section-card:nth-child(2)'); // 技術專長
+        const certificates = leftColumn.querySelector('.section-card:nth-child(3)'); // 證照
+        const experiences = rightColumn.querySelector('.section-card');
+        
+        if (!personalInfo || !skills || !certificates || !experiences) {
+            console.error('找不到必要的區塊元素');
+            return;
+        }
+        
+        // 獲取所有經驗項目
+        const allExperiences = experiences.querySelectorAll('.experience-item');
+        const page1Experiences = Array.from(allExperiences).filter(exp => 
+            exp.getAttribute('data-pdf-page') === '1'
+        );
+        const page2Experiences = Array.from(allExperiences).filter(exp => 
+            exp.getAttribute('data-pdf-page') === '2'
+        );
+        
+        // 清空原始結構
+        mainRow.innerHTML = '';
+        
+        // 創建第一頁內容
+        const page1 = document.createElement('div');
+        page1.className = 'row page-one';
+        page1.innerHTML = `
+            <div class="col-lg-5 col-md-12 left-column">
+            </div>
+            <div class="col-lg-7 col-md-12 right-column">
+                <section class="section-card">
+                    <h2 class="section-title">開發經驗</h2>
+                </section>
+            </div>
+        `;
+        
+        // 添加左欄內容到第一頁
+        page1.querySelector('.left-column').appendChild(personalInfo.cloneNode(true));
+        page1.querySelector('.left-column').appendChild(certificates.cloneNode(true));
+        
+        // 添加第一頁經驗
+        const page1ExperienceSection = page1.querySelector('.section-card');
+        page1Experiences.forEach(exp => {
+            page1ExperienceSection.appendChild(exp.cloneNode(true));
+        });
+        
+        // 為第一頁最後一個經驗添加分頁標記
+        const lastPage1Exp = page1ExperienceSection.lastElementChild;
+        if (lastPage1Exp) {
+            lastPage1Exp.classList.add('page-break-after');
+        }
+        
+        // 創建第二頁內容
+        const page2 = document.createElement('div');
+        page2.className = 'row page-two';
+        page2.innerHTML = `
+            <div class="col-lg-5 col-md-12 left-column">
+            </div>
+            <div class="col-lg-7 col-md-12 right-column">
+                <section class="section-card">
+                    <h2 class="section-title">開發經驗（續）</h2>
+                </section>
+            </div>
+        `;
+        
+        // 添加技術專長到第二頁左欄
+        page2.querySelector('.left-column').appendChild(skills.cloneNode(true));
+        
+        // 添加第二頁經驗
+        const page2ExperienceSection = page2.querySelector('.section-card');
+        page2Experiences.forEach(exp => {
+            page2ExperienceSection.appendChild(exp.cloneNode(true));
+        });
+        
+        // 添加頁面到主容器
+        mainRow.appendChild(page1);
+        mainRow.appendChild(page2);
+        
+        console.log('PDF內容重組完成');
+        
+    } catch (error) {
+        console.error('PDF內容重組失敗:', error);
+        // 如果重組失敗，就使用原始內容
     }
-    
-    // 創建第二頁內容
-    const page2 = document.createElement('div');
-    page2.className = 'row page-two';
-    page2.innerHTML = `
-        <div class="col-lg-5 col-md-12 left-column">
-        </div>
-        <div class="col-lg-7 col-md-12 right-column">
-            <section class="section-card">
-                <h2 class="section-title">開發經驗（續）</h2>
-            </section>
-        </div>
-    `;
-    
-    // 添加技術專長到第二頁左欄
-    page2.querySelector('.left-column').appendChild(skills.cloneNode(true));
-    
-    // 添加第二頁經驗
-    const page2ExperienceSection = page2.querySelector('.section-card');
-    page2Experiences.forEach(exp => {
-        page2ExperienceSection.appendChild(exp.cloneNode(true));
-    });
-    
-    // 添加頁面到主容器
-    mainRow.appendChild(page1);
-    mainRow.appendChild(page2);
 }
