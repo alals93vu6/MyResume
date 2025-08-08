@@ -347,8 +347,15 @@ body {
     }
     
     .autobiography-content {
-        break-inside: avoid;
-        page-break-inside: avoid;
+        page-break-before: always;
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+    
+    /* 強制第二頁開始 */
+    .section-card.autobiography-content {
+        page-break-before: always;
+        margin-top: 0;
     }
     
     /* PDF 專用雙欄固定布局 */
@@ -438,9 +445,10 @@ body {
 /* PDF 生成時的特殊樣式 */
 .pdf-generating .pdf-mode {
     width: 794px !important;
-    min-height: auto !important;
+    min-height: 1400px !important;
     background: white !important;
     font-size: 12pt !important;
+    overflow: visible !important;
 }
 
 .pdf-generating .pdf-mode .row {

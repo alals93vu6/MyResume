@@ -16,9 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 scrollX: 0,
                 scrollY: 0,
                 width: 794,
-                height: 1123,
+                height: null,
                 dpi: 150,
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
+                windowWidth: 794,
+                windowHeight: 1400
             },
             jsPDF: { 
                 unit: 'pt', 
@@ -27,9 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 compress: true
             },
             pagebreak: { 
-                mode: ['css', 'legacy'],
-                before: '.page-break-before',
-                after: '.page-break-after'
+                mode: ['avoid-all', 'css', 'legacy'],
+                before: '.autobiography-content',
+                after: '.experience-item'
             }
         };
 
