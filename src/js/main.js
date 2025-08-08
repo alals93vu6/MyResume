@@ -4,55 +4,84 @@ document.addEventListener('DOMContentLoaded', function() {
     const resumeContent = document.getElementById('resume-content');
 
     downloadBtn.addEventListener('click', function() {
-        // 設置 PDF 選項 - 使用最簡單穩定的配置
-        const opt = {
-            margin: 10,
-            filename: '蘇明凱_履歷.pdf',
-            image: { type: 'jpeg', quality: 0.9 },
-            html2canvas: { 
-                scale: 1,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: '#ffffff'
-            },
-            jsPDF: { 
-                unit: 'mm', 
-                format: 'a4', 
-                orientation: 'portrait'
-            }
-        };
-
+        // 顯示處理中訊息
+        showMessage('正在生成PDF，請稍候...', 'info');
+        
         // 隱藏下載按鈕
         const downloadSection = document.querySelector('.download-section');
         downloadSection.style.display = 'none';
 
-        // 為PDF生成添加特殊樣式類
-        document.body.classList.add('pdf-generating');
-        resumeContent.classList.add('pdf-mode');
+        // 克隆內容並創建一個乾淨的容器
+        const clonedContent = resumeContent.cloneNode(true);
+        
+        // 創建臨時容器
+        const tempContainer = document.createElement('div');
+        tempContainer.style.cssText = `
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 794px;
+            background: white;
+            font-family: 'Microsoft JhengHei', '微軟正黑體', Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        `;
+        tempContainer.appendChild(clonedContent);
+        document.body.appendChild(tempContainer);
 
-        // 生成 PDF
-        html2pdf().set(opt).from(resumeContent).save().then(function() {
-            // 移除PDF生成樣式
-            document.body.classList.remove('pdf-generating');
-            resumeContent.classList.remove('pdf-mode');
-            
-            // 恢復下載按鈕
-            downloadSection.style.display = 'block';
-            
-            // 顯示成功消息
-            showMessage('PDF 下載成功！', 'success');
-        }).catch(function(error) {
-            // 移除PDF生成樣式
-            document.body.classList.remove('pdf-generating');
-            resumeContent.classList.remove('pdf-mode');
-            
-            // 恢復下載按鈕
-            downloadSection.style.display = 'block';
-            
-            // 顯示錯誤消息
-            showMessage('PDF 下載失敗，請稍後再試', 'error');
-            console.error('PDF生成錯誤:', error);
-        });
+        // 等待一下讓瀏覽器渲染
+        setTimeout(function() {
+            // 設置 PDF 選項
+            const opt = {
+                margin: [15, 15, 15, 15],
+                filename: '蘇明凱_履歷.pdf',
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.92 
+                },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    width: 794,
+                    height: clonedContent.scrollHeight,
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF: { 
+                    unit: 'px', 
+                    format: [794, 1123], 
+                    orientation: 'portrait',
+                    hotfixes: ['px_scaling']
+                }
+            };
+
+            // 生成 PDF
+            html2pdf().set(opt).from(clonedContent).save().then(function() {
+                // 清理臨時容器
+                document.body.removeChild(tempContainer);
+                
+                // 恢復下載按鈕
+                downloadSection.style.display = 'block';
+                
+                // 顯示成功消息
+                showMessage('PDF 下載成功！', 'success');
+            }).catch(function(error) {
+                // 清理臨時容器
+                if (document.body.contains(tempContainer)) {
+                    document.body.removeChild(tempContainer);
+                }
+                
+                // 恢復下載按鈕
+                downloadSection.style.display = 'block';
+                
+                // 顯示錯誤消息
+                showMessage('PDF 下載失敗，請稍後再試', 'error');
+                console.error('PDF生成錯誤:', error);
+            });
+        }, 500);
     });
 
     // 圖片替換功能
@@ -73,6 +102,10 @@ function showMessage(message, type) {
     messageDiv.textContent = message;
     
     // 設置樣式
+    let bgColor = '#dc3545;'; // error default
+    if (type === 'success') bgColor = '#28a745;';
+    else if (type === 'info') bgColor = '#17a2b8;';
+    
     messageDiv.style.cssText = `
         position: fixed;
         top: 20px;
@@ -84,7 +117,7 @@ function showMessage(message, type) {
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         transition: all 0.3s ease;
-        ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+        background-color: ${bgColor}
     `;
     
     // 添加到頁面

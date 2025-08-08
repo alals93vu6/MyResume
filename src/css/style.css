@@ -429,16 +429,11 @@ body {
     }
 }
 
-/* PDF 生成時的特殊樣式 - 簡化版本 */
-.pdf-generating .pdf-mode {
-    background: white !important;
-    max-width: none !important;
-}
-
-.pdf-generating .pdf-mode .page-container {
-    background: white !important;
-    max-width: none !important;
-    margin: 0 !important;
+/* 確保PDF生成時有正確的基礎樣式 */
+body {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 /* 確保兩欄在桌面版等高 */
