@@ -296,16 +296,19 @@ body {
 @media print {
     body {
         background-color: white;
+        font-size: 12pt;
     }
     
     .page-container {
         max-width: none;
         margin: 0;
         box-shadow: none;
+        background-color: white;
     }
     
     .resume-container {
-        padding: 20px;
+        padding: 15px;
+        background-color: white;
     }
     
     .download-section {
@@ -316,39 +319,161 @@ body {
         background: #4a90e2 !important;
         -webkit-print-color-adjust: exact;
         color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 20px !important;
     }
     
     .section-title {
         color: #4a90e2 !important;
         -webkit-print-color-adjust: exact;
         color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 14pt;
     }
     
     .section-card {
         box-shadow: none;
         border: 1px solid #ddd;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
         break-inside: avoid;
+        padding: 15px;
+        background: white;
     }
     
     .experience-item {
         break-inside: avoid;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
+        page-break-inside: avoid;
     }
     
     .autobiography-content {
         break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    /* PDF 專用雙欄固定布局 */
+    .row {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    
+    .col-lg-5 {
+        display: table-cell;
+        width: 40%;
+        vertical-align: top;
+        padding-right: 15px;
+    }
+    
+    .col-lg-7 {
+        display: table-cell;
+        width: 60%;
+        vertical-align: top;
+        padding-left: 15px;
+    }
+    
+    /* Badge 樣式優化 */
+    .badge {
+        background-color: #4a90e2 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 9pt;
+        display: inline-block;
+        margin: 2px;
+    }
+    
+    .badge.bg-success {
+        background-color: #28a745 !important;
+    }
+    
+    .badge.bg-info {
+        background-color: #17a2b8 !important;
+    }
+    
+    .badge.bg-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+    
+    /* 字體大小調整 */
+    .profile-header .name {
+        font-size: 18pt;
+    }
+    
+    .profile-header .title {
+        font-size: 12pt;
+    }
+    
+    .contact-item {
+        font-size: 10pt;
+        margin-bottom: 4px;
+    }
+    
+    .experience-details li {
+        font-size: 10pt;
+        margin-bottom: 3px;
     }
     
     /* 列印時移除Bootstrap的間距 */
     .mb-4 {
-        margin-bottom: 15px !important;
+        margin-bottom: 12px !important;
     }
     
     .py-4 {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
     }
+    
+    /* 確保圖片不會太大 */
+    .profile-image img {
+        width: 60px !important;
+        height: 60px !important;
+    }
+}
+
+/* PDF 生成時的特殊樣式 */
+.pdf-generating .pdf-mode {
+    width: 794px !important;
+    min-height: auto !important;
+    background: white !important;
+    font-size: 12pt !important;
+}
+
+.pdf-generating .pdf-mode .row {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    margin: 0 !important;
+}
+
+.pdf-generating .pdf-mode .col-lg-5 {
+    display: table-cell !important;
+    width: 40% !important;
+    vertical-align: top !important;
+    padding-right: 15px !important;
+    float: none !important;
+}
+
+.pdf-generating .pdf-mode .col-lg-7 {
+    display: table-cell !important;
+    width: 60% !important;
+    vertical-align: top !important;
+    padding-left: 15px !important;
+    float: none !important;
+}
+
+.pdf-generating .pdf-mode .badge {
+    background-color: #4a90e2 !important;
+    color: white !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    font-size: 9pt !important;
+    display: inline-block !important;
+    margin: 2px !important;
 }
 
 /* 確保兩欄在桌面版等高 */

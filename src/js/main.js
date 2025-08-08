@@ -6,37 +6,57 @@ document.addEventListener('DOMContentLoaded', function() {
     downloadBtn.addEventListener('click', function() {
         // 設置 PDF 選項
         const opt = {
-            margin: 0.5,
+            margin: [0.3, 0.3, 0.3, 0.3],
             filename: '蘇明凱_履歷.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
+            image: { type: 'jpeg', quality: 0.95 },
             html2canvas: { 
-                scale: 2,
+                scale: 1.5,
                 useCORS: true,
                 letterRendering: true,
                 scrollX: 0,
-                scrollY: 0
+                scrollY: 0,
+                width: 794,
+                height: 1123,
+                dpi: 150,
+                backgroundColor: '#ffffff'
             },
             jsPDF: { 
-                unit: 'in', 
+                unit: 'pt', 
                 format: 'a4', 
                 orientation: 'portrait',
-                precision: 16
+                compress: true
             },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            pagebreak: { 
+                mode: ['css', 'legacy'],
+                before: '.page-break-before',
+                after: '.page-break-after'
+            }
         };
 
         // 隱藏下載按鈕
         const downloadSection = document.querySelector('.download-section');
         downloadSection.style.display = 'none';
 
+        // 為PDF生成添加特殊樣式類
+        document.body.classList.add('pdf-generating');
+        resumeContent.classList.add('pdf-mode');
+
         // 生成 PDF
         html2pdf().set(opt).from(resumeContent).save().then(function() {
+            // 移除PDF生成樣式
+            document.body.classList.remove('pdf-generating');
+            resumeContent.classList.remove('pdf-mode');
+            
             // 恢復下載按鈕
             downloadSection.style.display = 'block';
             
             // 顯示成功消息
             showMessage('PDF 下載成功！', 'success');
         }).catch(function(error) {
+            // 移除PDF生成樣式
+            document.body.classList.remove('pdf-generating');
+            resumeContent.classList.remove('pdf-mode');
+            
             // 恢復下載按鈕
             downloadSection.style.display = 'block';
             
