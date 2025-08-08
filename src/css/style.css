@@ -346,7 +346,17 @@ body {
         page-break-inside: avoid;
     }
     
+    /* 分頁控制 */
+    .page-break-after {
+        page-break-after: always;
+    }
+    
+    .page-two {
+        page-break-before: always;
+    }
+    
     .autobiography-content {
+        page-break-before: always;
         break-inside: avoid;
     }
     
