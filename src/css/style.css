@@ -347,36 +347,23 @@ body {
     }
     
     .autobiography-content {
-        page-break-before: always;
-        break-inside: auto;
-        page-break-inside: auto;
+        break-inside: avoid;
     }
     
-    /* 強制第二頁開始 */
-    .section-card.autobiography-content {
-        page-break-before: always;
-        margin-top: 0;
-    }
-    
-    /* PDF 專用雙欄固定布局 */
+    /* PDF 專用雙欄固定布局 - 簡化版 */
     .row {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
+        display: flex;
+        flex-wrap: nowrap;
     }
     
     .col-lg-5 {
-        display: table-cell;
-        width: 40%;
-        vertical-align: top;
-        padding-right: 15px;
+        flex: 0 0 40%;
+        max-width: 40%;
     }
     
     .col-lg-7 {
-        display: table-cell;
-        width: 60%;
-        vertical-align: top;
-        padding-left: 15px;
+        flex: 0 0 60%;
+        max-width: 60%;
     }
     
     /* Badge 樣式優化 */
@@ -442,46 +429,16 @@ body {
     }
 }
 
-/* PDF 生成時的特殊樣式 */
+/* PDF 生成時的特殊樣式 - 簡化版本 */
 .pdf-generating .pdf-mode {
-    width: 794px !important;
-    min-height: 1400px !important;
     background: white !important;
-    font-size: 12pt !important;
-    overflow: visible !important;
+    max-width: none !important;
 }
 
-.pdf-generating .pdf-mode .row {
-    display: table !important;
-    width: 100% !important;
-    table-layout: fixed !important;
+.pdf-generating .pdf-mode .page-container {
+    background: white !important;
+    max-width: none !important;
     margin: 0 !important;
-}
-
-.pdf-generating .pdf-mode .col-lg-5 {
-    display: table-cell !important;
-    width: 40% !important;
-    vertical-align: top !important;
-    padding-right: 15px !important;
-    float: none !important;
-}
-
-.pdf-generating .pdf-mode .col-lg-7 {
-    display: table-cell !important;
-    width: 60% !important;
-    vertical-align: top !important;
-    padding-left: 15px !important;
-    float: none !important;
-}
-
-.pdf-generating .pdf-mode .badge {
-    background-color: #4a90e2 !important;
-    color: white !important;
-    padding: 3px 8px !important;
-    border-radius: 4px !important;
-    font-size: 9pt !important;
-    display: inline-block !important;
-    margin: 2px !important;
 }
 
 /* 確保兩欄在桌面版等高 */

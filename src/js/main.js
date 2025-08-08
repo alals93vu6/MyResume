@@ -4,34 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const resumeContent = document.getElementById('resume-content');
 
     downloadBtn.addEventListener('click', function() {
-        // 設置 PDF 選項
+        // 設置 PDF 選項 - 使用最簡單穩定的配置
         const opt = {
-            margin: [0.3, 0.3, 0.3, 0.3],
+            margin: 10,
             filename: '蘇明凱_履歷.pdf',
-            image: { type: 'jpeg', quality: 0.95 },
+            image: { type: 'jpeg', quality: 0.9 },
             html2canvas: { 
-                scale: 1.5,
+                scale: 1,
                 useCORS: true,
-                letterRendering: true,
-                scrollX: 0,
-                scrollY: 0,
-                width: 794,
-                height: null,
-                dpi: 150,
-                backgroundColor: '#ffffff',
-                windowWidth: 794,
-                windowHeight: 1400
+                allowTaint: true,
+                backgroundColor: '#ffffff'
             },
             jsPDF: { 
-                unit: 'pt', 
+                unit: 'mm', 
                 format: 'a4', 
-                orientation: 'portrait',
-                compress: true
-            },
-            pagebreak: { 
-                mode: ['avoid-all', 'css', 'legacy'],
-                before: '.autobiography-content',
-                after: '.experience-item'
+                orientation: 'portrait'
             }
         };
 
